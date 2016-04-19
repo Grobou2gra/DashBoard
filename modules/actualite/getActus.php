@@ -1,6 +1,15 @@
 <?php
+
 $actudoc = new DOMDocument();
-$actudoc->load('http://news.google.fr/news?cf=all&hl=fr&pz=1&ned=fr&topic=h&num=3&output=rss');
+$opts = array(
+    'http' => array(
+        'user_agent' => 'PHP libxml agent',
+    )
+);
+
+$context = stream_context_create($opts);
+libxml_set_streams_context($context);
+$actudoc->load('http://www.estrepublicain.fr/rss');
 $item = $actudoc->getElementsByTagName("item");
 $incractu=0;
 $actutab=array($incractu);
@@ -18,6 +27,7 @@ foreach($item as $it) {
 		$actutab[$incractu]= array("titre"=>$titre, "info"=>$info);
 		$incrcln++;
 	}
+
 	$incractu++;
 }
 $actutab[10]= $actutab[0];
